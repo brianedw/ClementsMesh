@@ -1,0 +1,408 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     13974,        400]
+NotebookOptionsPosition[     11685,        365]
+NotebookOutlinePosition[     12063,        381]
+CellTagsIndexPosition[     12020,        378]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"$Assumptions", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Apply", "[", 
+       RowBox[{"And", ",", "#"}], "]"}], "&"}], "@", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Im", "[", "#", "]"}], "\[Equal]", "0"}], "&"}], ",", "#"}], 
+      "]"}]}], "&"}], "@", 
+   RowBox[{"{", 
+    RowBox[{
+    "\[Theta]", ",", " ", "\[Phi]", ",", "\[Theta]p", ",", "\[Phi]p", ",", 
+     " ", "r1", ",", " ", "r1p", ",", " ", "r2", ",", " ", "r2p"}], 
+    "}"}]}]}]], "Input",
+ CellChangeTimes->{{3.847470555119602*^9, 3.847470643447361*^9}, {
+  3.8474707909158373`*^9, 
+  3.847470807074296*^9}},ExpressionUUID->"9a0fd754-fc2a-41ef-9974-\
+6f5314e4997a"],
+
+Cell["A mixer has the following transmissive SParams", "Text",
+ CellChangeTimes->{{3.847473428096771*^9, 
+  3.8474734405281124`*^9}},ExpressionUUID->"570e8a82-2386-41a1-90e5-\
+c7b1d4948524"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"T", "[", 
+   RowBox[{"\[Theta]_", ",", "\[Phi]_"}], "]"}], ":=", 
+  RowBox[{"(", GridBox[{
+     {
+      RowBox[{
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "\[Phi]"}], "]"}], 
+       RowBox[{"Cos", "[", "\[Theta]", "]"}]}], 
+      RowBox[{"-", 
+       RowBox[{"Sin", "[", "\[Theta]", "]"}]}]},
+     {
+      RowBox[{
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "\[Phi]"}], "]"}], 
+       RowBox[{"Sin", "[", "\[Theta]", "]"}]}], 
+      RowBox[{"Cos", "[", "\[Theta]", "]"}]}
+    }], ")"}]}]], "Input",
+ CellChangeTimes->{{3.8474704071741295`*^9, 3.847470482820159*^9}, {
+  3.8474705425410757`*^9, 
+  3.847470548569789*^9}},ExpressionUUID->"d3947bb2-7481-43de-b742-\
+f7e72f9528a3"],
+
+Cell["Analytically, one can define the inverse of this matrix.", "Text",
+ CellChangeTimes->{{3.847473446058058*^9, 
+  3.847473460254059*^9}},ExpressionUUID->"d45539a9-013c-4079-879a-\
+17083879fa36"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Tinv", "[", 
+   RowBox[{"\[Theta]_", ",", "\[Phi]_"}], "]"}], "=", 
+  RowBox[{"FullSimplify", "@", 
+   RowBox[{"Inverse", "@", 
+    RowBox[{"T", "[", 
+     RowBox[{"\[Theta]", ",", "\[Phi]"}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.8474705052427216`*^9, 3.8474705308661594`*^9}, {
+  3.847470672435753*^9, 
+  3.847470674963442*^9}},ExpressionUUID->"12b1185d-c5e7-4665-949f-\
+7029b713a599"],
+
+Cell[TextData[{
+ "It is state in Clements that given ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SuperscriptBox["T", 
+     RowBox[{"-", "1"}]], "D"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "dda0003b-0fbc-4cdc-92ef-db4fbfad5af1"],
+ ", one can find ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"D", "'"}], "T"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "5f378976-5abd-4b91-8eb2-4120bccd88cf"],
+ ".  Here we will attempt to find the new parameters of ",
+ Cell[BoxData[
+  FormBox["T", TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "0cd5d6c8-0e51-4e93-9724-959a4540f7a5"],
+ " and the new phase shifts in ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"D", "'"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "aebe72f9-514f-47d6-b2b7-a3148df448e1"],
+ "."
+}], "Text",
+ CellChangeTimes->{{3.8474734646318293`*^9, 3.8474734714512997`*^9}, {
+  3.8474735104981174`*^9, 
+  3.8474736140906963`*^9}},ExpressionUUID->"78f0aa9e-d1ca-46f2-a3f8-\
+ded7a719aeb9"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"DM", "=", 
+   RowBox[{"(", GridBox[{
+      {
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "r1"}], "]"}], "0"},
+      {"0", 
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "r2"}], "]"}]}
+     }], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DMp", "=", 
+   RowBox[{"(", GridBox[{
+      {
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "r1p"}], "]"}], "0"},
+      {"0", 
+       RowBox[{"Exp", "[", 
+        RowBox[{"\[ImaginaryI]", " ", "r2p"}], "]"}]}
+     }], ")"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.8474706529504757`*^9, 
+  3.847470775443465*^9}},ExpressionUUID->"1454571c-1154-4fe9-8dd3-\
+e5f09f0e2f39"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"A1", "=", 
+   RowBox[{
+    RowBox[{"Tinv", "[", 
+     RowBox[{"\[Theta]", ",", "\[Phi]"}], "]"}], ".", "DM"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"MatrixForm", "@", "A1"}]}], "Input",
+ CellChangeTimes->{{3.8474707851817374`*^9, 3.847470816391764*^9}, {
+  3.847470864833889*^9, 3.847470893537476*^9}, {3.84747348220897*^9, 
+  3.8474734880049*^9}},ExpressionUUID->"c5abb5bb-4b72-4732-b4fa-c6843dabb7fe"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"A2", "=", 
+   RowBox[{"DMp", ".", 
+    RowBox[{"T", "[", 
+     RowBox[{"\[Theta]p", ",", "\[Phi]p"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"MatrixForm", "@", "A2"}]}], "Input",
+ CellChangeTimes->{{3.8474708959238653`*^9, 3.847470939332059*^9}, {
+  3.847473492223359*^9, 
+  3.8474734974179544`*^9}},ExpressionUUID->"a43c6f3e-d6d9-4951-bdcd-\
+8bc0a612d21e"],
+
+Cell["\<\
+Possibly one could find a solution to this using Solve, but it didn\
+\[CloseCurlyQuote]t happen quickly.\
+\>", "Text",
+ CellChangeTimes->{{3.8474736569481907`*^9, 
+  3.847473678210426*^9}},ExpressionUUID->"820febe9-a1c3-4bef-a46a-\
+1516097b2f03"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"Solve", "[", 
+   RowBox[{
+    RowBox[{"LogicalExpand", "@", 
+     RowBox[{"(", 
+      RowBox[{"A1", "\[Equal]", "A2"}], ")"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"\[Theta]p", ",", "\[Phi]p", ",", "r1p", ",", "r2p"}], "}"}]}], 
+   "]"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.847470943564769*^9, 3.8474709847275295`*^9}, {
+  3.847474229321889*^9, 
+  3.847474236175398*^9}},ExpressionUUID->"720ee603-422a-4365-96ca-\
+5a3ca0852a65"],
+
+Cell["\<\
+Rather, we will take some good guesses of the nature of the solution.\
+\>", "Text",
+ CellChangeTimes->{{3.8474736859548283`*^9, 3.8474737065270233`*^9}, {
+  3.847473750992587*^9, 
+  3.847473753688793*^9}},ExpressionUUID->"658a3e36-3b97-4056-95ea-\
+8961a595b978"],
+
+Cell[BoxData[
+ RowBox[{"eqs", "=", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"eq1", ",", "eq2", ",", "eq3", ",", " ", "eq4"}], "}"}], "=", 
+   RowBox[{"Thread", "[", 
+    RowBox[{
+     RowBox[{"Flatten", "[", "A1", "]"}], "\[Equal]", 
+     RowBox[{"Flatten", "[", "A2", "]"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.847471295049697*^9, 3.847471344296777*^9}, {
+  3.8474718522402077`*^9, 
+  3.8474718534282427`*^9}},ExpressionUUID->"f146c404-8f05-4d29-bc3a-\
+c5f356e236db"],
+
+Cell[TextData[{
+ "First, note that the magnitude are all governed by ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"Cos", "[", "\[Theta]", "]"}], "\[Equal]", 
+    RowBox[{"Cos", "[", "\[Theta]p", "]"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "cbb7405d-12e8-4900-9bce-2e2791676b0a"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"Sin", "[", "\[Theta]", "]"}], "\[Equal]", 
+    RowBox[{"-", 
+     RowBox[{"Sin", "[", "\[Theta]p", "]"}]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "e71d862e-a2aa-4aa9-9ee1-482233ee47a2"],
+ ".  This begs the solution solution ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Theta]p", "\[Rule]", 
+    RowBox[{"-", "\[Theta]"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "d595899b-6677-4aac-9797-dca8a432ec4a"],
+ "."
+}], "Text",
+ CellChangeTimes->{{3.847473768554411*^9, 
+  3.847473908641679*^9}},ExpressionUUID->"ee412d53-06e2-46c4-bb9a-\
+aa900ad717fd"],
+
+Cell[BoxData[
+ RowBox[{"eqs2", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ReplaceAll", "[", 
+     RowBox[{"#", ",", 
+      RowBox[{"{", 
+       RowBox[{"\[Theta]p", "\[Rule]", 
+        RowBox[{"-", "\[Theta]"}]}], "}"}]}], "]"}], "&"}], "@", 
+   "eqs"}]}]], "Input",
+ CellChangeTimes->{{3.8474726272414875`*^9, 3.847472663661002*^9}, {
+  3.847472707201643*^9, 3.8474727346966705`*^9}, {3.8474728366674795`*^9, 
+  3.84747284071355*^9}, {3.847472882270229*^9, 
+  3.8474728825114107`*^9}},ExpressionUUID->"d722f3a3-bcf7-49bd-9244-\
+402461a1add7"],
+
+Cell[TextData[{
+ "Following that, we manually extract the phase terms.  We have three free \
+variables we are attempting to solve for (ie ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"{", 
+    RowBox[{"r1p", ",", "r2p", ",", "\[Phi]p"}], "}"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "0f8e8e38-324a-45fa-95f2-296c23a5f51e"],
+ ") but four equations."
+}], "Text",
+ CellChangeTimes->{{3.847473920338906*^9, 
+  3.8474739857133675`*^9}},ExpressionUUID->"a714a16e-dece-48c8-ae72-\
+4741e6ee3c04"],
+
+Cell[BoxData[
+ RowBox[{"eq3", "=", "\[IndentingNewLine]", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"r1", "-", "\[Phi]"}], "\[Equal]", 
+     RowBox[{"r1p", "+", "\[Phi]p"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"r2", "-", "\[Phi]"}], "\[Equal]", "r1p"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"r1", "\[Equal]", 
+     RowBox[{"r2p", "+", "\[Phi]p"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"r2", "\[Equal]", "r2p"}]}], "}"}]}]], "Input",
+ CellChangeTimes->{{3.847472934298628*^9, 
+  3.8474730132973785`*^9}},ExpressionUUID->"48ee769d-cf14-4b89-a620-\
+14c2c6380dd0"],
+
+Cell["\<\
+However, one must be redundant, as a solution can be easily found.\
+\>", "Text",
+ CellChangeTimes->{{3.847474008189357*^9, 
+  3.8474740428489513`*^9}},ExpressionUUID->"7bf37448-fe64-46f5-b2b6-\
+09b48aac50e4"],
+
+Cell[BoxData[
+ RowBox[{"solPhase", "=", 
+  RowBox[{"First", "@", 
+   RowBox[{"Solve", "[", 
+    RowBox[{"eq3", ",", 
+     RowBox[{"{", 
+      RowBox[{"r1p", ",", "r2p", ",", "\[Phi]p"}], "}"}]}], 
+    "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.8474730672448964`*^9, 3.847473139869155*^9}, {
+  3.8474739953068757`*^9, 
+  3.8474739970790043`*^9}},ExpressionUUID->"967fea27-688c-45ec-afe9-\
+52a30bf90438"],
+
+Cell[TextData[{
+ "Joining the solution for the magnitude and phase variables yields \
+everything we need to define  ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"D", "'"}], "T"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "b9042a4c-3db7-4ce8-a12c-954357fc7289"],
+ " given ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SuperscriptBox["T", 
+     RowBox[{"-", "1"}]], "D"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "d60ff34d-e4e9-43a4-a170-0a4b77c9658e"],
+ ".  "
+}], "Text",
+ CellChangeTimes->{{3.847474051656617*^9, 
+  3.84747413036864*^9}},ExpressionUUID->"734f9355-8741-48ff-bd0d-\
+a7ed29f9bfd3"],
+
+Cell[BoxData[
+ RowBox[{"sol", "=", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\[Theta]p", "\[Rule]", 
+     RowBox[{"-", "\[Theta]"}]}], "}"}], "~", "Join", "~", 
+   "solPhase"}]}]], "Input",
+ CellChangeTimes->{{3.847473183365168*^9, 
+  3.847473193872571*^9}},ExpressionUUID->"48a1986d-7bad-4237-9068-\
+de3f1e85d3a0"],
+
+Cell[BoxData[
+ RowBox[{"eqs4", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Simplify", "@", 
+     RowBox[{"ReplaceAll", "[", 
+      RowBox[{"#", ",", "sol"}], "]"}]}], "&"}], "@", "eqs"}]}]], "Input",
+ CellChangeTimes->{{3.8474731636127043`*^9, 3.847473163825197*^9}, {
+  3.8474732024794703`*^9, 
+  3.8474732189609795`*^9}},ExpressionUUID->"80a894ed-f551-4b5f-9938-\
+58567d00e06d"]
+},
+WindowSize->{1920, 997},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+Magnification:>1.5 Inherited,
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 735, 22, 43, "Input",ExpressionUUID->"9a0fd754-fc2a-41ef-9974-6f5314e4997a"],
+Cell[1296, 44, 190, 3, 52, "Text",ExpressionUUID->"570e8a82-2386-41a1-90e5-c7b1d4948524"],
+Cell[1489, 49, 759, 22, 66, "Input",ExpressionUUID->"d3947bb2-7481-43de-b742-f7e72f9528a3"],
+Cell[2251, 73, 198, 3, 52, "Text",ExpressionUUID->"d45539a9-013c-4079-879a-17083879fa36"],
+Cell[2452, 78, 429, 11, 43, "Input",ExpressionUUID->"12b1185d-c5e7-4665-949f-7029b713a599"],
+Cell[2884, 91, 1056, 32, 52, "Text",ExpressionUUID->"78f0aa9e-d1ca-46f2-a3f8-ded7a719aeb9"],
+Cell[3943, 125, 724, 23, 121, "Input",ExpressionUUID->"1454571c-1154-4fe9-8dd3-e5f09f0e2f39"],
+Cell[4670, 150, 447, 10, 73, "Input",ExpressionUUID->"c5abb5bb-4b72-4732-b4fa-c6843dabb7fe"],
+Cell[5120, 162, 408, 11, 73, "Input",ExpressionUUID->"a43c6f3e-d6d9-4951-bdcd-8bc0a612d21e"],
+Cell[5531, 175, 256, 6, 52, "Text",ExpressionUUID->"820febe9-a1c3-4bef-a46a-1516097b2f03"],
+Cell[5790, 183, 476, 13, 43, "Input",ExpressionUUID->"720ee603-422a-4365-96ca-5a3ca0852a65"],
+Cell[6269, 198, 272, 6, 52, "Text",ExpressionUUID->"658a3e36-3b97-4056-95ea-8961a595b978"],
+Cell[6544, 206, 477, 12, 43, "Input",ExpressionUUID->"f146c404-8f05-4d29-bc3a-c5f356e236db"],
+Cell[7024, 220, 993, 29, 52, "Text",ExpressionUUID->"ee412d53-06e2-46c4-bb9a-aa900ad717fd"],
+Cell[8020, 251, 542, 14, 43, "Input",ExpressionUUID->"d722f3a3-bcf7-49bd-9244-402461a1add7"],
+Cell[8565, 267, 515, 13, 52, "Text",ExpressionUUID->"a714a16e-dece-48c8-ae72-4741e6ee3c04"],
+Cell[9083, 282, 609, 15, 160, "Input",ExpressionUUID->"48ee769d-cf14-4b89-a620-14c2c6380dd0"],
+Cell[9695, 299, 218, 5, 52, "Text",ExpressionUUID->"7bf37448-fe64-46f5-b2b6-09b48aac50e4"],
+Cell[9916, 306, 402, 11, 43, "Input",ExpressionUUID->"967fea27-688c-45ec-afe9-52a30bf90438"],
+Cell[10321, 319, 661, 21, 52, "Text",ExpressionUUID->"734f9355-8741-48ff-bd0d-a7ed29f9bfd3"],
+Cell[10985, 342, 315, 9, 43, "Input",ExpressionUUID->"48a1986d-7bad-4237-9068-de3f1e85d3a0"],
+Cell[11303, 353, 378, 10, 43, "Input",ExpressionUUID->"80a894ed-f551-4b5f-9938-58567d00e06d"]
+}
+]
+*)
+
