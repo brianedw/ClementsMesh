@@ -1,5 +1,5 @@
-# ~Title~
+# Clements Mesh Generator
 
-This is a starting point for quick analyses.
+see `clements_mesh.ipynb`.
 
 
